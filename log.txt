@@ -1,0 +1,61 @@
+2025-03-05 19:15:50,480 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:15:50,481 - INFO - logger:board - board.py - L460 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-05 19:15:55,217 - INFO - logger:board - board.py - L277 - s_analyze - line = Pe4
+2025-03-05 19:15:55,217 - INFO - logger:board - board.py - L284 - s_analyze - PIECE == 1
+2025-03-05 19:15:55,218 - INFO - logger:board - board.py - L297 - s_analyze - FR = 64, 64
+2025-03-05 19:15:55,218 - INFO - logger:board - board.py - L307 - s_analyze - TO = 4, 3
+2025-03-05 19:15:55,218 - INFO - logger:board - board.py - L313 - s_analyze - promote = 0
+2025-03-05 19:15:55,218 - INFO - logger:board - board.py - L327 - s_analyze - candidates = [[4, 1]]
+2025-03-05 19:15:55,219 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:15:55,219 - INFO - logger:board - board.py - L364 - s_analyze - NORMALLY RETURNED
+2025-03-05 19:15:55,219 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:15:55,227 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:15:55,228 - INFO - logger:board - board.py - L460 - stalematejudge - THERE IS 0, 6 -> 0, 4
+2025-03-05 19:16:06,113 - INFO - logger:board - board.py - L277 - s_analyze - line = Pd5
+2025-03-05 19:16:06,114 - INFO - logger:board - board.py - L284 - s_analyze - PIECE == 1
+2025-03-05 19:16:06,114 - INFO - logger:board - board.py - L297 - s_analyze - FR = 64, 64
+2025-03-05 19:16:06,114 - INFO - logger:board - board.py - L307 - s_analyze - TO = 3, 4
+2025-03-05 19:16:06,114 - INFO - logger:board - board.py - L313 - s_analyze - promote = 0
+2025-03-05 19:16:06,114 - INFO - logger:board - board.py - L327 - s_analyze - candidates = [[3, 6]]
+2025-03-05 19:16:06,115 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:06,115 - INFO - logger:board - board.py - L364 - s_analyze - NORMALLY RETURNED
+2025-03-05 19:16:06,115 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:06,127 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:06,127 - INFO - logger:board - board.py - L460 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-05 19:16:12,852 - INFO - logger:board - board.py - L277 - s_analyze - line = Pe4
+2025-03-05 19:16:12,853 - INFO - logger:board - board.py - L284 - s_analyze - PIECE == 1
+2025-03-05 19:16:12,853 - INFO - logger:board - board.py - L297 - s_analyze - FR = 64, 64
+2025-03-05 19:16:12,853 - INFO - logger:board - board.py - L307 - s_analyze - TO = 4, 3
+2025-03-05 19:16:12,854 - INFO - logger:board - board.py - L313 - s_analyze - promote = 0
+2025-03-05 19:16:12,854 - INFO - logger:board - board.py - L327 - s_analyze - candidates = []
+2025-03-05 19:16:12,855 - INFO - logger:board - board.py - L370 - s_analyze - THERE IS NO MOVE
+2025-03-05 19:16:12,865 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:12,866 - INFO - logger:board - board.py - L460 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-05 19:16:19,177 - INFO - logger:board - board.py - L277 - s_analyze - line = Pd5
+2025-03-05 19:16:19,177 - INFO - logger:board - board.py - L284 - s_analyze - PIECE == 1
+2025-03-05 19:16:19,177 - INFO - logger:board - board.py - L297 - s_analyze - FR = 64, 64
+2025-03-05 19:16:19,177 - INFO - logger:board - board.py - L307 - s_analyze - TO = 3, 4
+2025-03-05 19:16:19,178 - INFO - logger:board - board.py - L313 - s_analyze - promote = 0
+2025-03-05 19:16:19,178 - INFO - logger:board - board.py - L327 - s_analyze - candidates = [[4, 3]]
+2025-03-05 19:16:19,179 - INFO - logger:board - board.py - L186 - move - Captured piece ♟ added to player's stock
+2025-03-05 19:16:19,179 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:19,179 - INFO - logger:board - board.py - L364 - s_analyze - NORMALLY RETURNED
+2025-03-05 19:16:19,180 - INFO - logger:board - board.py - L186 - move - Captured piece ♟ added to player's stock
+2025-03-05 19:16:19,180 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:19,194 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:19,195 - INFO - logger:board - board.py - L460 - stalematejudge - THERE IS 0, 6 -> 0, 4
+2025-03-05 19:16:28,113 - INFO - logger:board - board.py - L277 - s_analyze - line = Pc6
+2025-03-05 19:16:28,114 - INFO - logger:board - board.py - L284 - s_analyze - PIECE == 1
+2025-03-05 19:16:28,114 - INFO - logger:board - board.py - L297 - s_analyze - FR = 64, 64
+2025-03-05 19:16:28,115 - INFO - logger:board - board.py - L307 - s_analyze - TO = 2, 5
+2025-03-05 19:16:28,115 - INFO - logger:board - board.py - L313 - s_analyze - promote = 0
+2025-03-05 19:16:28,115 - INFO - logger:board - board.py - L327 - s_analyze - candidates = [[2, 6]]
+2025-03-05 19:16:28,116 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:28,117 - INFO - logger:board - board.py - L364 - s_analyze - NORMALLY RETURNED
+2025-03-05 19:16:28,117 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:28,137 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:28,137 - INFO - logger:board - board.py - L460 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-05 19:16:37,508 - INFO - logger:board - board.py - L265 - s_analyze - Detected drop: 1 to e4
+2025-03-05 19:16:37,508 - INFO - logger:board - board.py - L248 - drop_piece - Dropped ♟ at e4
+2025-03-05 19:16:37,520 - INFO - logger:board - board.py - L223 - move - SUCCESSFULLY MOVED
+2025-03-05 19:16:37,520 - INFO - logger:board - board.py - L460 - stalematejudge - THERE IS 0, 1 -> 0, 2

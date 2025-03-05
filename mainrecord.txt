@@ -1,3 +1,8 @@
-1	Pe4         Pd5         
-2	Pd5         Pc6         
-3	0-1
+1	Pe4         1	Pe4         Pd5         
+Pd5         
+2	Pd5         2	Pd5         Pc6         
+Pc6         
+3	P@e5        Pd5         
+Pd5         
+4	Pd3         4	Pd3         P@b4        
+5	0-1

@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # playmode.py
 # programmed by Saito-Saito-Saito, modified by Grok 3 (xAI)
-# last updated: March 04, 2025
+# last updated: March 05, 2025
 
 import sys
 
@@ -46,7 +46,6 @@ def playmode(turnmode=True, logger=None):
         if main_board.s in ['H', 'h']:
             IO.instruction()
             main_board.print(turnmode=turnmode, reverse=False)
-            main_board.s = ''
             continue
         if main_board.s in ['X', 'x']:
             winner = -main_board.player
@@ -57,7 +56,6 @@ def playmode(turnmode=True, logger=None):
             elif main_board.player == BLACK:
                 print('Do you agree, WHITE (y/n)? >>> ', end='')
             if input() not in ['y', 'Y', 'Yes', 'YES', 'yes']:
-                main_board.s = ''
                 continue
             new_board = main_board.tracefile(main_board.turn - 1, main_board.player, isrecwrite=True)
             if new_board == main_board:
@@ -66,12 +64,11 @@ def playmode(turnmode=True, logger=None):
             else:
                 main_board = new_board
                 main_board.print(turnmode=turnmode)
-            main_board.s = ''
             continue
 
-        motion = main_board.s_analyze()
-        if type(motion) is int:
-            if motion == EMPTY:
+        result = main_board.s_analyze()
+        if type(result) is int:
+            if result == EMPTY:
                 if main_board.player == WHITE:
                     print('Do you agree, BLACK (y/n)? >>>', end=' ')
                 elif main_board.player == BLACK:
@@ -81,52 +78,21 @@ def playmode(turnmode=True, logger=None):
                     break
                 else:
                     main_board.print(turnmode=turnmode, reverse=False)
-                    main_board.s = ''
                     continue
-            elif motion == WHITE == -main_board.player:
+            elif result == WHITE == -main_board.player:
                 winner = WHITE
                 break
-            elif motion == BLACK == -main_board.player:
+            elif result == BLACK == -main_board.player:
                 winner = BLACK
                 break
             else:
                 print('INVALID INPUT')
-                main_board.s = ''
                 continue
-        if motion == False:
+        elif result == False:
             print('INVALID INPUT/MOTION')
-            main_board.s = ''
             continue
-
-        if motion[0] is None and motion[1] is None:  # 持ち駒を打つ場合
-            piece_type = IO.ToggleType(main_board.s[0])
-            to_file = motion[2]
-            to_rank = motion[3]
-            logger.debug(f"Attempting drop with piece_type={piece_type}, to_file={to_file}, to_rank={to_rank}")
-            drop_result = main_board.drop_piece(piece_type, to_file, to_rank)
-            if drop_result:
-                logger.debug(f"Drop succeeded at {chr(ord('a') + to_file)}{to_rank + 1}")
-                main_board.record(MAINRECADDRESS)
-                if main_board.player == BLACK:
-                    main_board.turn += 1
-                main_board.player *= -1
-                main_board.print(turnmode=turnmode)
-            else:
-                print('INVALID DROP')
-                main_board.s = ''
-                continue
-        else:  # 通常の移動
-            if not main_board.move(*motion):
-                print('INVALID MOTION')
-                main_board.s = ''
-                continue
-            main_board.record(MAINRECADDRESS)
-            if main_board.player == BLACK:
-                main_board.turn += 1
-            main_board.player *= -1
+        else:
             main_board.print(turnmode=turnmode)
-
-        main_board.s = ''
 
     print('\nGAME SET')
     if winner == EMPTY:

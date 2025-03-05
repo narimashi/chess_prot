@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # board.py
 # programmed by Saito-Saito-Saito, modified by Grok 3 (xAI)
-# last updated: March 04, 2025
+# last updated: March 05, 2025
 
 import copy
 import re
@@ -221,6 +221,11 @@ class Board:
             self.castl_k.remove(self.player)
         
         logger.info('SUCCESSFULLY MOVED')
+        # ターン更新をここで実行
+        self.record(MAINRECADDRESS)
+        if self.player == BLACK:
+            self.turn += 1
+        self.player *= -1
         return True
 
     def drop_piece(self, piece_type, toFILE, toRANK, logger=None):
@@ -246,6 +251,11 @@ class Board:
         self.board[toFILE][toRANK] = self.player * piece_type
         self.captured_pieces[self.player].remove(piece_type)
         logger.info(f"Dropped {IO.ToggleType(piece_type)} at {chr(ord('a') + toFILE)}{toRANK + 1}")
+        # ターン更新をここで実行
+        self.record(MAINRECADDRESS)
+        if self.player == BLACK:
+            self.turn += 1
+        self.player *= -1
         return True
 
     def s_analyze(self, logger=None):
@@ -266,7 +276,7 @@ class Board:
             logger.debug(f"Calling drop_piece with piece={piece}, toFILE={toFILE}, toRANK={toRANK}")
             if self.drop_piece(piece, toFILE, toRANK):
                 logger.debug("Drop succeeded")
-                return [None, None, toFILE, toRANK, EMPTY]
+                return True
             else:
                 logger.debug(f"Drop failed for {self.s}")
                 return False
@@ -362,10 +372,12 @@ class Board:
 
             if len(candidates) == 1:
                 logger.info('NORMALLY RETURNED')
-                return [candidates[0][FILE], candidates[0][RANK], toFILE, toRANK, promote]
+                self.move(candidates[0][FILE], candidates[0][RANK], toFILE, toRANK, promote)
+                return True
             elif len(candidates) > 1:
                 logger.warning('THERE IS ANOTHER MOVE')
-                return [candidates[0][FILE], candidates[0][RANK], toFILE, toRANK, promote]
+                self.move(candidates[0][FILE], candidates[0][RANK], toFILE, toRANK, promote)
+                return True
             else:
                 logger.info('THERE IS NO MOVE')
                 return False
@@ -391,10 +403,12 @@ class Board:
                 sys.exit('SYSTEM ERROR')
             if self.s in ['O-O-O', 'o-o-o', '0-0-0'] and self.board[e - 1][rank] == self.player * KING:
                 logger.info('format is {}, castl is {}'.format(self.s, self.castl_q))
-                return [e - 1, rank, c - 1, rank, EMPTY]
+                self.move(e - 1, rank, c - 1, rank, EMPTY)
+                return True
             elif self.s in ['O-O', 'o-o', '0-0'] and self.board[e - 1][rank] == self.player * KING:
                 logger.info('format is {}, castl is {}'.format(self.s, self.castl_k))
-                return [e - 1, rank, g - 1, rank, EMPTY]
+                self.move(e - 1, rank, g - 1, rank, EMPTY)
+                return True
             
             logger.debug('INVALID FORMAT')
             return False
@@ -521,15 +535,8 @@ class Board:
             if letter in [' ', '\t', '\n', ',', '.']:
                 logger.info('local_s is {}'.format(local_board.s))
                 motion = local_board.s_analyze()
-                if type(motion) is list:
-                    if motion[0] is None and motion[1] is None:
-                        local_board.drop_piece(IO.ToggleType(local_board.s[0]), motion[2], motion[3])
-                    else:
-                        local_board.move(*motion)
+                if motion == True:
                     local_board.record(SUBRECADDRESS)
-                    if local_board.player == BLACK:
-                        local_board.turn += 1
-                    local_board.player *= -1
                     if local_board.turn == destination_turn and local_board.player == destination_player:
                         logger.info('trace succeeded')
                         if isrecwrite:
@@ -555,15 +562,8 @@ class Board:
 
         logger.info('local_s is {}'.format(local_board.s))
         motion = local_board.s_analyze()
-        if type(motion) is list:
-            if motion[0] is None and motion[1] is None:
-                local_board.drop_piece(IO.ToggleType(local_board.s[0]), motion[2], motion[3])
-            else:
-                local_board.move(*motion)
+        if motion == True:
             local_board.record(SUBRECADDRESS)
-            if local_board.player == BLACK:
-                local_board.turn += 1
-            local_board.player *= -1
             if local_board.turn == destination_turn and local_board.player == destination_player:
                 logger.info('trace succeeded')
                 if isrecwrite:
@@ -589,10 +589,8 @@ if __name__ == "__main__":
     local_board = Board()
     local_board.print()
     local_board.move(c - 1, 2 - 1, c - 1, 4 - 1)
-    local_board.player *= -1
     local_board.print(turnmode=True)
     local_board.move(c - 1, 7 - 1, c - 1, 6 - 1)
-    local_board.player *= -1
     local_board.print(turnmode=True)
     print(local_board.king_place(WHITE))
     print(local_board.king_place(BLACK))

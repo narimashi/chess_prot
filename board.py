@@ -168,6 +168,8 @@ class Board:
             focused[RANK] += direction[RANK]
         return True
 
+    # ... (他の部分は変更なし)
+
     def move(self, frFILE, frRANK, toFILE, toRANK, promote=EMPTY, logger=None):
         logger = logger or self.logger
         
@@ -181,7 +183,7 @@ class Board:
         piece = abs(self.board[frFILE][frRANK])
         
         if self.board[toFILE][toRANK] != EMPTY:
-            captured_piece = abs(self.board[toFILE][toRANK])
+            captured_piece = self.board[toFILE][toRANK]  # 符号付きで保持
             self.captured_pieces[self.player].append(captured_piece)
             logger.info(f"Captured piece {IO.ToggleType(captured_piece)} added to player's stock")
 
@@ -228,6 +230,10 @@ class Board:
         self.player *= -1
         return True
 
+# ... (他の部分は変更なし)
+
+    # ... (他の部分は変更なし)
+
     def drop_piece(self, piece_type, toFILE, toRANK, logger=None):
         logger = logger or self.logger
 
@@ -240,7 +246,7 @@ class Board:
             logger.debug('TARGET SQUARE IS OCCUPIED')
             return False
 
-        if piece_type == PAWN and (toRANK == (SIZE - 1) if self.player == WHITE else toRANK == 0):
+        if abs(piece_type) == PAWN and (toRANK == (SIZE - 1) if self.player == WHITE else toRANK == 0):
             logger.debug('CANNOT DROP PAWN ON LAST RANK')
             return False
 
@@ -248,15 +254,16 @@ class Board:
             logger.debug('PIECE NOT IN CAPTURED STOCK')
             return False
 
-        self.board[toFILE][toRANK] = self.player * piece_type
+        self.board[toFILE][toRANK] = self.player * abs(piece_type)  # 符号をプレイヤーに合わせて変換
         self.captured_pieces[self.player].remove(piece_type)
         logger.info(f"Dropped {IO.ToggleType(piece_type)} at {chr(ord('a') + toFILE)}{toRANK + 1}")
-        # ターン更新をここで実行
         self.record(MAINRECADDRESS)
         if self.player == BLACK:
             self.turn += 1
         self.player *= -1
         return True
+
+# ... (他の部分は変更なし)
 
     def s_analyze(self, logger=None):
         logger = logger or self.logger

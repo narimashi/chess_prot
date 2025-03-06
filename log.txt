@@ -1,0 +1,36 @@
+2025-03-06 22:03:27,762 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:03:28,909 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:03:29,860 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:03:31,358 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:03:32,374 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:03:33,418 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:03:35,842 - INFO - logger:board - board.py - L188 - move - Captured piece ♙ added to player's stock
+2025-03-06 22:03:35,843 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:03:41,458 - INFO - logger:board - board.py - L188 - move - Captured piece ♟ added to player's stock
+2025-03-06 22:03:41,458 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:03:44,734 - INFO - logger:board - board.py - L259 - drop_piece - Dropped ♙ at f5
+2025-03-06 22:03:48,854 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:03:55,681 - INFO - logger:board - board.py - L188 - move - Captured piece ♔ added to player's stock
+2025-03-06 22:03:55,682 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:11,621 - INFO - logger:board - board.py - L188 - move - Captured piece ♝ added to player's stock
+2025-03-06 22:04:11,621 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:15,389 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:20,009 - INFO - logger:board - board.py - L188 - move - Captured piece ♞ added to player's stock
+2025-03-06 22:04:20,010 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:25,612 - INFO - logger:board - board.py - L259 - drop_piece - Dropped ♔ at g4
+2025-03-06 22:04:28,362 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:28,978 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:29,872 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:30,708 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:31,774 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:34,066 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:38,342 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:42,053 - INFO - logger:board - board.py - L188 - move - Captured piece ♖ added to player's stock
+2025-03-06 22:04:42,054 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:50,786 - INFO - logger:board - board.py - L259 - drop_piece - Dropped ♞ at c4
+2025-03-06 22:04:53,438 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:04:54,317 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:05:01,268 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:05:02,033 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED
+2025-03-06 22:05:06,764 - INFO - logger:board - board.py - L188 - move - Captured piece ♙ added to player's stock
+2025-03-06 22:05:06,765 - INFO - logger:board - board.py - L225 - move - SUCCESSFULLY MOVED

@@ -1,19 +1,18 @@
-#! /usr/bin/env python3
-# config.py
-# programmed by Saito-Saito-Saito, modified by Grok 3 (xAI)
-# last updated: March 04, 2025
-
 from logging import getLogger, StreamHandler, FileHandler, DEBUG, INFO, WARNING, ERROR, CRITICAL, Formatter
+import os
 
-### LOGGER SETTINGS
-DEFAULT_LOG_ADDRESS = 'log.txt'
+# ディレクトリ作成
+os.makedirs('data', exist_ok=True)
+
+# LOGGER SETTINGS
+DEFAULT_LOG_ADDRESS = 'data/log.txt'
 DEFAULT_FORMAT = Formatter('%(asctime)s - %(levelname)s - logger:%(name)s - %(filename)s - L%(lineno)d - %(funcName)s - %(message)s')
 
 def setLogger(name='default', *, level=INFO, fhandler=None, shandler=None, fhandler_level=DEBUG, shandler_level=CRITICAL, filemode='w', filename=DEFAULT_LOG_ADDRESS, fhandler_format=DEFAULT_FORMAT, shandler_format=DEFAULT_FORMAT):
     logger = getLogger(name)
     logger.setLevel(level)
 
-    fhandler = fhandler or FileHandler(filename, mode=filemode, encoding='utf-8')  # エンコーディングを追加
+    fhandler = fhandler or FileHandler(filename, mode=filemode, encoding='utf-8')
     fhandler.setLevel(fhandler_level)
     fhandler.setFormatter(fhandler_format)
     logger.addHandler(fhandler)
@@ -26,8 +25,8 @@ def setLogger(name='default', *, level=INFO, fhandler=None, shandler=None, fhand
     return logger
 
 # record files
-MAINRECADDRESS = 'mainrecord.txt'
-SUBRECADDRESS = 'subrecord.txt'
+MAINRECADDRESS = 'data/mainrecord.txt'
+SUBRECADDRESS = 'data/subrecord.txt'
 
 # board size
 SIZE = 8

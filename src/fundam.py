@@ -4,7 +4,6 @@
 # explained on https://Saito-Saito-Saito.github.io/chess
 # last updated: 15 August 2020
 
-
 import config
 
 # positive or negative (returning 1, -1, or 0)
@@ -12,10 +11,9 @@ def PosNeg(subject):
     if subject > 0:
         return 1
     elif subject < 0:
-        return - 1
+        return -1
     else:
         return 0
-
 
 # whether the index is in the board (bool)
 def InSize(subject):
@@ -23,7 +21,6 @@ def InSize(subject):
         return True
     else:
         return False
-
 
 if __name__=="__main__":
     try:

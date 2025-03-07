@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # board.py
 # programmed by Saito-Saito-Saito, modified by Grok 3 (xAI)
-# last updated: March 05, 2025
+# last updated: March 07, 2025
 
 import copy
 import re
@@ -168,9 +168,7 @@ class Board:
             focused[RANK] += direction[RANK]
         return True
 
-    # ... (他の部分は変更なし)
-
-    def move(self, frFILE, frRANK, toFILE, toRANK, promote=EMPTY, logger=None):
+    def move(self, frFILE, frRANK, toFILE, toRANK, promote=EMPTY, logger=None, simulation=False):
         logger = logger or self.logger
         
         if self.motionjudge(frFILE, frRANK, toFILE, toRANK, promote) == False:
@@ -182,10 +180,20 @@ class Board:
 
         piece = abs(self.board[frFILE][frRANK])
         
+        # シミュレーション時には状態を変更しないように、元の状態を保存
+        original_board = copy.deepcopy(self.board)
+        original_ep_target = copy.deepcopy(self.ep_target)
+        original_castl_k = copy.deepcopy(self.castl_k)
+        original_castl_q = copy.deepcopy(self.castl_q)
+        original_captured_pieces = copy.deepcopy(self.captured_pieces)
+        original_turn = self.turn
+        original_player = self.player
+        
         if self.board[toFILE][toRANK] != EMPTY:
-            captured_piece = self.board[toFILE][toRANK]  # 符号付きで保持
+            captured_piece = self.board[toFILE][toRANK]
             self.captured_pieces[self.player].append(captured_piece)
-            logger.info(f"Captured piece {IO.ToggleType(captured_piece)} added to player's stock")
+            if not simulation:
+                logger.info(f"Captured piece {IO.ToggleType(captured_piece)} added to player's stock")
 
         if piece == KING and abs(toFILE - frFILE) > 1:
             if self.player == WHITE:
@@ -222,12 +230,23 @@ class Board:
         if self.player in self.castl_k and (piece == KING or (piece == ROOK and frFILE == h - 1)):
             self.castl_k.remove(self.player)
         
-        logger.info('SUCCESSFULLY MOVED')
-        # ターン更新をここで実行
-        self.record(MAINRECADDRESS)
-        if self.player == BLACK:
-            self.turn += 1
-        self.player *= -1
+        if not simulation:
+            logger.info('SUCCESSFULLY MOVED')
+            # ターン更新をここで実行
+            self.record(MAINRECADDRESS)
+            if self.player == BLACK:
+                self.turn += 1
+            self.player *= -1
+        else:
+            # シミュレーション時には状態を元に戻す
+            self.board = original_board
+            self.ep_target = original_ep_target
+            self.castl_k = original_castl_k
+            self.castl_q = original_castl_q
+            self.captured_pieces = original_captured_pieces
+            self.turn = original_turn
+            self.player = original_player
+            
         return True
 
     def drop_piece(self, piece_type, toFILE, toRANK, logger=None):
@@ -250,7 +269,7 @@ class Board:
             logger.debug('PIECE NOT IN CAPTURED STOCK')
             return False
 
-        self.board[toFILE][toRANK] = self.player * abs(piece_type)  # 符号をプレイヤーに合わせて変換
+        self.board[toFILE][toRANK] = self.player * abs(piece_type)
         self.captured_pieces[self.player].remove(piece_type)
         logger.info(f"Dropped {IO.ToggleType(piece_type)} at {chr(ord('a') + toFILE)}{toRANK + 1}")
         self.record(MAINRECADDRESS)
@@ -452,7 +471,7 @@ class Board:
                     for toFILE in range(SIZE):
                         for toRANK in range(SIZE):
                             local_board = Board(board=self.board, target=self.ep_target, castl_k=self.castl_k, castl_q=self.castl_q, player=matee)
-                            if local_board.move(frFILE, frRANK, toFILE, toRANK, Q) and local_board.checkcounter(matee) == 0:
+                            if local_board.move(frFILE, frRANK, toFILE, toRANK, Q, simulation=True) and local_board.checkcounter(matee) == 0:
                                 logger.info('THERE IS {}, {} -> {}, {}'.format(frFILE,frRANK,toFILE,toRANK))
                                 return False
                     logger.debug('"FR = {}, {}" was unavailable'.format(frFILE, frRANK))
@@ -471,12 +490,36 @@ class Board:
                     for toFILE in range(SIZE):
                         for toRANK in range(SIZE):
                             local_board = Board(board=self.board, target=self.ep_target, castl_k=self.castl_k, castl_q=self.castl_q, player=matee)
-                            if local_board.move(frFILE, frRANK, toFILE, toRANK, Q) and local_board.checkcounter(matee) == 0:
+                            if local_board.move(frFILE, frRANK, toFILE, toRANK, Q, simulation=True) and local_board.checkcounter(matee) == 0:
                                 logger.info('THERE IS {}, {} -> {}, {}'.format(frFILE,frRANK,toFILE,toRANK))
                                 return False
                     logger.debug('"FR = {}, {}" was unavailable'.format(frFILE, frRANK))
-        logger.info('STALEMATE. {} cannot move'.format(self.player))
+        logger.info('STALEMATE. {} cannot move'.format(matee))
         return True
+
+    def is_game_over(self, logger=None):
+        """ゲーム終了判定を返す: WHITE (白勝利), BLACK (黒勝利), EMPTY (引き分け), None (継続中)"""
+        logger = logger or self.logger
+
+        # チェックメイト判定
+        if self.checkmatejudge(-self.player):
+            logger.info(f"Checkmate! {self.player} wins!")
+            return self.player
+
+        # ステイルメイト判定
+        if self.stalematejudge(self.player):
+            logger.info("Stalemate! Game is a draw!")
+            return EMPTY
+
+        # キングの不在判定
+        if self.king_place(WHITE) == EMPTY:
+            logger.info("Black wins! White king is missing!")
+            return BLACK
+        if self.king_place(BLACK) == EMPTY:
+            logger.info("White wins! Black king is missing!")
+            return WHITE
+
+        return None
 
     def record(self, address, logger=None):
         logger = logger or self.logger

@@ -60,25 +60,43 @@ def draw_board(main_board, selected_square=None):
             if piece != EMPTY:
                 screen.blit(piece_images[piece], (col * SQUARE_SIZE, row * SQUARE_SIZE + 100))
     
+    # ハイライト表示
     if selected_square and isinstance(selected_square, tuple) and len(selected_square) == 2:
         col, row = selected_square
         highlight = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE), pygame.SRCALPHA)
         highlight.fill(HIGHLIGHT_COLOR)
         screen.blit(highlight, (col * SQUARE_SIZE, row * SQUARE_SIZE + 100))
+    elif selected_square and isinstance(selected_square, tuple) and len(selected_square) == 6 and selected_square[2] == "drop_target":
+        col, row, _, _, _, _ = selected_square
+        highlight = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE), pygame.SRCALPHA)
+        highlight.fill(HIGHLIGHT_COLOR)
+        screen.blit(highlight, (col * SQUARE_SIZE, row * SQUARE_SIZE + 100))
 
-def draw_captured_pieces(main_board):
+def draw_captured_pieces(main_board, selected_square=None):
     white_captured = main_board.captured_pieces[WHITE]
     black_captured = main_board.captured_pieces[BLACK]
     
+    # 白の持ち駒（上部）
     for i, piece in enumerate(white_captured):
         abs_piece = abs(piece)
         displayed_piece = WHITE * abs_piece if piece < 0 else BLACK * abs_piece
         screen.blit(piece_images[displayed_piece], (i * SQUARE_SIZE, 10))
     
+    # 黒の持ち駒（下部）
     for i, piece in enumerate(black_captured):
         abs_piece = abs(piece)
         displayed_piece = BLACK * abs_piece if piece > 0 else WHITE * abs_piece
         screen.blit(piece_images[displayed_piece], (i * SQUARE_SIZE, WINDOW_HEIGHT - SQUARE_SIZE - 10))
+    
+    # 選択中の持ち駒をハイライト
+    if selected_square and selected_square[0] == "captured":
+        player, idx = selected_square[1], selected_square[2]
+        highlight = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE), pygame.SRCALPHA)
+        highlight.fill(HIGHLIGHT_COLOR)
+        if player == WHITE:
+            screen.blit(highlight, (idx * SQUARE_SIZE, 10))
+        else:
+            screen.blit(highlight, (idx * SQUARE_SIZE, WINDOW_HEIGHT - SQUARE_SIZE - 10))
 
 def get_promotion_choice(main_board, selected_square, clock):
     """昇格選択ダイアログを表示（オーバーレイ形式）"""
@@ -94,7 +112,7 @@ def get_promotion_choice(main_board, selected_square, clock):
     
     # 半透明のオーバーレイを描画
     overlay = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA)
-    overlay.fill((0, 0, 0, 200))  # 半透明の黒
+    overlay.fill((0, 0, 0, 200))
     screen.blit(overlay, (0, 0))
     
     # 選択肢を描画
@@ -137,21 +155,46 @@ def main():
                 col = x // SQUARE_SIZE
                 row = (y - 100) // SQUARE_SIZE
                 
-                if y < 100:
+                # 持ち駒エリアのクリック
+                if y < 100:  # 上部（白の持ち駒エリア）
                     piece_idx = x // SQUARE_SIZE
-                    if piece_idx < len(main_board.captured_pieces[WHITE]):
+                    if selected_square and (selected_square[0] == "captured" or selected_square[2] == "drop_target"):
+                        if piece_idx >= len(main_board.captured_pieces[WHITE]):
+                            # 空いている部分をクリックしてキャンセル
+                            logger.debug("Cancelled captured piece selection by clicking empty space (White)")
+                            selected_square = None
+                            continue
+                        elif piece_idx < len(main_board.captured_pieces[WHITE]) and main_board.player == WHITE:
+                            # 別の持ち駒を選択
+                            selected_square = ("captured", WHITE, piece_idx)
+                            logger.debug(f"Selected captured piece: White, index {piece_idx}")
+                            continue
+                    if piece_idx < len(main_board.captured_pieces[WHITE]) and main_board.player == WHITE:
                         selected_square = ("captured", WHITE, piece_idx)
                         logger.debug(f"Selected captured piece: White, index {piece_idx}")
                         continue
-                elif y > BOARD_SIZE + 100:
+                elif y > BOARD_SIZE + 100:  # 下部（黒の持ち駒エリア）
                     piece_idx = x // SQUARE_SIZE
-                    if piece_idx < len(main_board.captured_pieces[BLACK]):
+                    if selected_square and (selected_square[0] == "captured" or selected_square[2] == "drop_target"):
+                        if piece_idx >= len(main_board.captured_pieces[BLACK]):
+                            # 空いている部分をクリックしてキャンセル
+                            logger.debug("Cancelled captured piece selection by clicking empty space (Black)")
+                            selected_square = None
+                            continue
+                        elif piece_idx < len(main_board.captured_pieces[BLACK]) and main_board.player == BLACK:
+                            # 別の持ち駒を選択
+                            selected_square = ("captured", BLACK, piece_idx)
+                            logger.debug(f"Selected captured piece: Black, index {piece_idx}")
+                            continue
+                    if piece_idx < len(main_board.captured_pieces[BLACK]) and main_board.player == BLACK:
                         selected_square = ("captured", BLACK, piece_idx)
                         logger.debug(f"Selected captured piece: Black, index {piece_idx}")
                         continue
                 
+                # ボード内のクリック
                 if 0 <= row < SIZE and 0 <= col < SIZE:
                     if selected_square is None:
+                        # 通常の駒選択
                         if main_board.board[col][row] != EMPTY and fundam.PosNeg(main_board.board[col][row]) == main_board.player:
                             selected_square = (col, row)
                             logger.debug(f"Selected square: ({col}, {row})")
@@ -159,15 +202,35 @@ def main():
                         if selected_square[0] == "captured":
                             player, idx = selected_square[1], selected_square[2]
                             piece = main_board.captured_pieces[player][idx]
-                            logger.debug(f"Attempting drop: piece={piece} at ({col}, {row})")
-                            # 符号付きのまま渡す
-                            if main_board.drop_piece(piece, col, row):
-                                logger.debug("Drop successful")
-                                selected_square = None
+                            if selected_square[1] == main_board.player:
+                                # 1回目のクリックで配置先を選択
+                                selected_square = (col, row, "drop_target", player, idx, piece)
+                                logger.debug(f"Selected drop target: ({col}, {row})")
+                            # 盤面の自分の駒をクリックしてキャンセル
+                            if main_board.board[col][row] != EMPTY and fundam.PosNeg(main_board.board[col][row]) == main_board.player:
+                                selected_square = (col, row)
+                                logger.debug(f"Cancelled captured piece selection and selected square: ({col}, {row})")
+                        elif len(selected_square) == 6 and selected_square[2] == "drop_target":
+                            # 2回目のクリックで配置
+                            target_col, target_row, _, player, idx, piece = selected_square
+                            if (col, row) == (target_col, target_row):
+                                logger.debug(f"Attempting drop: piece={piece} at ({col}, {row})")
+                                if main_board.drop_piece(piece, col, row):
+                                    logger.debug("Drop successful")
+                                    selected_square = None
+                                else:
+                                    logger.debug("Drop failed")
+                                    selected_square = (target_col, target_row, "drop_target", player, idx, piece)
                             else:
-                                logger.debug("Drop failed")
-                                selected_square = None
+                                # 別のマスを選択
+                                selected_square = (col, row, "drop_target", player, idx, piece)
+                                logger.debug(f"Selected new drop target: ({col}, {row})")
+                            # 盤面の自分の駒をクリックしてキャンセル
+                            if main_board.board[col][row] != EMPTY and fundam.PosNeg(main_board.board[col][row]) == main_board.player:
+                                selected_square = (col, row)
+                                logger.debug(f"Cancelled drop target selection and selected square: ({col}, {row})")
                         else:
+                            # 通常の移動
                             fr_col, fr_row = selected_square
                             logger.debug(f"Attempting move: from ({fr_col}, {fr_row}) to ({col}, {row})")
                             piece = main_board.board[fr_col][fr_row]
@@ -188,8 +251,8 @@ def main():
                                     selected_square = None
         
         screen.fill((255, 255, 255))
-        draw_board(main_board, selected_square if isinstance(selected_square, tuple) and len(selected_square) == 2 else None)
-        draw_captured_pieces(main_board)
+        draw_board(main_board, selected_square if isinstance(selected_square, tuple) and len(selected_square) in [2, 6] else None)
+        draw_captured_pieces(main_board, selected_square)
         
         turn_text = font.render(f"Turn: {'White' if main_board.player == WHITE else 'Black'}", True, (0, 0, 0))
         screen.blit(turn_text, (10, WINDOW_HEIGHT - 40))

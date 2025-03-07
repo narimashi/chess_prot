@@ -230,10 +230,6 @@ class Board:
         self.player *= -1
         return True
 
-# ... (他の部分は変更なし)
-
-    # ... (他の部分は変更なし)
-
     def drop_piece(self, piece_type, toFILE, toRANK, logger=None):
         logger = logger or self.logger
 
@@ -262,8 +258,6 @@ class Board:
             self.turn += 1
         self.player *= -1
         return True
-
-# ... (他の部分は変更なし)
 
     def s_analyze(self, logger=None):
         logger = logger or self.logger

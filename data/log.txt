@@ -1,83 +1,89 @@
-2025-03-08 03:07:05,247 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:05,251 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
-2025-03-08 03:07:06,198 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:06,208 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
-2025-03-08 03:07:06,865 - INFO - logger:board - board.py - L196 - move - Captured piece ♙ added to player's stock
-2025-03-08 03:07:06,869 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:06,874 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
-2025-03-08 03:07:08,433 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:08,452 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
-2025-03-08 03:07:09,147 - INFO - logger:board - board.py - L196 - move - Captured piece ♙ added to player's stock
-2025-03-08 03:07:09,148 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:09,151 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
-2025-03-08 03:07:13,371 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:13,379 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
-2025-03-08 03:07:14,278 - INFO - logger:board - board.py - L196 - move - Captured piece ♙ added to player's stock
-2025-03-08 03:07:14,279 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:14,281 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
-2025-03-08 03:07:16,760 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:16,778 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
-2025-03-08 03:07:20,294 - INFO - logger:board - board.py - L196 - move - Captured piece ♘ added to player's stock
-2025-03-08 03:07:20,295 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:20,297 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
-2025-03-08 03:07:24,233 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
-2025-03-08 03:07:24,235 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,237 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,239 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,254 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,256 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,263 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,267 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,275 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,276 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,286 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,287 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,291 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,292 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,293 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,294 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,296 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,299 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,300 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,302 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,305 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,306 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,307 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,310 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,311 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,311 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,312 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,313 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,314 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,315 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,316 - INFO - logger:board - board.py - L506 - is_game_over - Checkmate! 1 wins!
-2025-03-08 03:07:24,316 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,318 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,319 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,329 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,330 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,334 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,337 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,342 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,343 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,349 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,350 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,354 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,355 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,356 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,357 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,359 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,362 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,363 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,364 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,367 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,368 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,369 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,373 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,373 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,374 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,375 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,375 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,376 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,377 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 6, 7 -> 4, 7
-2025-03-08 03:07:24,377 - INFO - logger:board - board.py - L506 - is_game_over - Checkmate! 1 wins!
+2025-03-08 19:37:04,382 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:04,384 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
+2025-03-08 19:37:05,580 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:05,587 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-08 19:37:06,369 - INFO - logger:board - board.py - L196 - move - Captured piece ♙ added to player's stock
+2025-03-08 19:37:06,372 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:06,375 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
+2025-03-08 19:37:08,061 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:08,064 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-08 19:37:09,025 - INFO - logger:board - board.py - L196 - move - Captured piece ♙ added to player's stock
+2025-03-08 19:37:09,026 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:09,029 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
+2025-03-08 19:37:12,317 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:12,322 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-08 19:37:14,576 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:14,578 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
+2025-03-08 19:37:15,276 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:15,281 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-08 19:37:16,380 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:16,386 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
+2025-03-08 19:37:16,994 - INFO - logger:board - board.py - L196 - move - Captured piece ♟ added to player's stock
+2025-03-08 19:37:16,995 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:17,000 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-08 19:37:20,013 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:20,014 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
+2025-03-08 19:37:21,108 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:21,114 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 1 -> 0, 2
+2025-03-08 19:37:22,598 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:22,600 - INFO - logger:board - board.py - L494 - stalematejudge - THERE IS 0, 6 -> 0, 4
+2025-03-08 19:37:24,508 - INFO - logger:board - board.py - L196 - move - Captured piece ♝ added to player's stock
+2025-03-08 19:37:24,508 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:24,509 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,341 - INFO - logger:board - board.py - L234 - move - SUCCESSFULLY MOVED
+2025-03-08 19:37:26,342 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,348 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,349 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,355 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,357 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,361 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,362 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,369 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,370 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,374 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,378 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,378 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,381 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,382 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,382 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,386 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,389 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,390 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,391 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,392 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,393 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,393 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,396 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,397 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,397 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,400 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,405 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,405 - INFO - logger:board - board.py - L506 - is_game_over - Checkmate! -1 wins!
+2025-03-08 19:37:26,406 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,410 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,410 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,413 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,414 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,416 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,417 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,425 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,425 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,429 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,431 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,432 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,435 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,436 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,437 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,442 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,445 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,446 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,447 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,447 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,448 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,448 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,450 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,451 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,453 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,458 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,461 - INFO - logger:board - board.py - L457 - checkcounter - CHECK: 5, 0 -> 4, 0
+2025-03-08 19:37:26,461 - INFO - logger:board - board.py - L506 - is_game_over - Checkmate! -1 wins!

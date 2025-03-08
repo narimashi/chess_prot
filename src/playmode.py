@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 # Pygameの初期化
 pygame.init()
+pygame.mixer.init()  # サウンド用のミキサー初期化
 
 # 画面設定
 SQUARE_SIZE = 64
@@ -36,8 +37,6 @@ GRADIENT_TOP = (70, 130, 180)
 GRADIENT_BOTTOM = (30, 60, 114)
 
 # 駒の画像をロードし、スケーリング
-
-# 修正後
 try:
     piece_images = {
         WHITE * PAWN: pygame.transform.scale(pygame.image.load('assets/pieces/wp.png').convert_alpha(), (SQUARE_SIZE, SQUARE_SIZE)),
@@ -55,8 +54,18 @@ try:
     }
 except FileNotFoundError as e:
     logger.error(f"Failed to load piece images: {e}")
-    print("Error: Could not load piece images. Please ensure the 'assets/pieces/' directory exists in 'C:\\Users\\sanri\\MyProject01\\chess_prot\\' and contains all required images (wp.png, wr.png, etc.).")
+    print("Error: Could not load piece images. Please ensure the 'assets/pieces/' directory exists and contains all required images.")
     sys.exit(1)
+
+# サウンドの読み込み
+try:
+    move_sound = pygame.mixer.Sound('assets/sounds/move_sound.mp3')
+    win_sound = pygame.mixer.Sound('assets/sounds/win_sound.mp3')
+except FileNotFoundError as e:
+    logger.warning(f"Failed to load sound files: {e}. Sound effects will be disabled.")
+    move_sound = None
+    win_sound = None
+
 # カスタムフォントの読み込み
 try:
     font_path = os.path.join("../Roboto-Regular.ttf")  # ルートディレクトリにあるフォント
@@ -200,7 +209,63 @@ def get_promotion_choice(main_board, selected_square, clock):
         
         clock.tick(60)
 
-def draw_game_over(main_board, clock):
+def confirm_resign(main_board, clock):
+    choices = ['Yes', 'No']
+    buttons = []
+    button_width = 150
+    button_height = 50
+    button_spacing = 10
+    total_height = (button_height + button_spacing) * len(choices) - button_spacing
+    start_y = (WINDOW_HEIGHT - total_height) // 2
+    
+    while True:
+        screen.fill((255, 255, 255))
+        draw_board(main_board)
+        draw_captured_pieces(main_board)
+        turn_text = small_font.render(f"Turn: {'White' if main_board.player == WHITE else 'Black'}", True, (0, 0, 0))
+        screen.blit(turn_text, (10, WINDOW_HEIGHT - 40))
+        
+        overlay = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 200))
+        screen.blit(overlay, (0, 0))
+        
+        title_text = title_font.render("Resign?", True, TEXT_COLOR)
+        title_rect = title_text.get_rect(center=(WINDOW_WIDTH // 2, start_y - 60))
+        screen.blit(title_text, title_rect)
+        
+        mouse_pos = pygame.mouse.get_pos()
+        
+        buttons.clear()
+        for i, choice in enumerate(choices):
+            y = start_y + i * (button_height + button_spacing)
+            button_rect = draw_button(
+                screen,
+                choice,
+                button_font,
+                (WINDOW_WIDTH - button_width) // 2,
+                y,
+                button_width,
+                button_height,
+                BUTTON_COLOR,
+                BUTTON_HOVER_COLOR,
+                mouse_pos
+            )
+            buttons.append((button_rect, choice))
+        
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for button_rect, choice in buttons:
+                    if button_rect.collidepoint(event.pos):
+                        return choice == 'Yes'
+        
+        clock.tick(60)
+
+def draw_game_over(main_board, clock, resign=False):
     result = main_board.is_game_over()
     message = ""
     if result == WHITE:
@@ -209,9 +274,16 @@ def draw_game_over(main_board, clock):
         message = "Black Wins!"
     elif result == EMPTY:
         message = "Draw by Stalemate!"
-    
+    elif resign:
+        winner = -main_board.player  # 投了したプレイヤーの相手が勝者
+        message = f"{'White' if winner == WHITE else 'Black'} Wins by Resignation!"
+
     if not message:
         return
+
+    # 勝利時にサウンドを再生
+    if win_sound:
+        win_sound.play()
 
     alpha = 0
     fade_speed = 5
@@ -334,6 +406,8 @@ def playmode_gui():
                                 logger.debug(f"Attempting drop: piece={piece} at ({col}, {row})")
                                 if main_board.drop_piece(piece, col, row):
                                     logger.debug("Drop successful")
+                                    if move_sound:
+                                        move_sound.play()  # 持ち駒を置いたときにサウンド再生
                                     selected_square = None
                                     move_made = True
                                 else:
@@ -353,6 +427,8 @@ def playmode_gui():
                                 promotion = get_promotion_choice(main_board, selected_square, clock)
                                 if main_board.move(fr_col, fr_row, col, row, {'Q': Q, 'R': R, 'N': N, 'B': B}[promotion]):
                                     logger.debug(f"Move successful with promotion to {promotion}")
+                                    if move_sound:
+                                        move_sound.play()  # 駒を移動したときにサウンド再生
                                     selected_square = None
                                     move_made = True
                                 else:
@@ -361,12 +437,28 @@ def playmode_gui():
                             else:
                                 if main_board.move(fr_col, fr_row, col, row):
                                     logger.debug("Move successful")
+                                    if move_sound:
+                                        move_sound.play()  # 駒を移動したときにサウンド再生
                                     selected_square = None
                                     move_made = True
                                 else:
                                     logger.debug("Move failed")
                                     selected_square = None
         
+                # 投了ボタンのクリック処理
+                resign_button = pygame.Rect(WINDOW_WIDTH - 210, WINDOW_HEIGHT - 90, 200, 50)
+                if resign_button.collidepoint(event.pos):
+                    logger.info(f"{main_board.player == WHITE and 'White' or 'Black'} initiated resign confirmation")
+                    if confirm_resign(main_board, clock):  # 確認ダイアログを表示
+                        logger.info(f"{main_board.player == WHITE and 'White' or 'Black'} resigned!")
+                        # 棋譜に記録（投了したプレイヤーの相手が勝利）
+                        main_board.s = "1-0" if main_board.player == BLACK else "0-1"
+                        main_board.record(MAINRECADDRESS)
+                        # ゲーム終了画面を表示
+                        draw_game_over(main_board, clock, resign=True)
+                        pygame.quit()
+                        sys.exit()
+
         if move_made:
             game_over = main_board.is_game_over()
             if game_over is not None:
@@ -381,6 +473,21 @@ def playmode_gui():
         
         turn_text = small_font.render(f"Turn: {'White' if main_board.player == WHITE else 'Black'}", True, (0, 0, 0))
         screen.blit(turn_text, (10, WINDOW_HEIGHT - 40))
+        
+        # 投了ボタンの描画
+        mouse_pos = pygame.mouse.get_pos()
+        resign_button = draw_button(
+            screen,
+            "Resign",
+            button_font,
+            WINDOW_WIDTH - 210,
+            WINDOW_HEIGHT - 90,
+            200,
+            50,
+            BUTTON_COLOR,
+            BUTTON_HOVER_COLOR,
+            mouse_pos
+        )
         
         pygame.display.flip()
         clock.tick(60)

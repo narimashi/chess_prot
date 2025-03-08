@@ -3,6 +3,7 @@ import pygame
 import sys
 import os
 import logging
+import random  # ボット用に追加
 
 from config import *
 import board
@@ -61,6 +62,7 @@ except FileNotFoundError as e:
 try:
     move_sound = pygame.mixer.Sound('assets/sounds/move_sound.mp3')
     win_sound = pygame.mixer.Sound('assets/sounds/win_sound.mp3')
+    win_sound.set_volume(0.8)  # 勝利時のサウンド音量を0.8に設定
 except FileNotFoundError as e:
     logger.warning(f"Failed to load sound files: {e}. Sound effects will be disabled.")
     move_sound = None
@@ -77,53 +79,6 @@ except FileNotFoundError:
     title_font = pygame.font.SysFont(None, 48)
     button_font = pygame.font.SysFont(None, 36)
     small_font = pygame.font.SysFont(None, 24)
-
-def draw_board(main_board, selected_square=None):
-    for row in range(SIZE):
-        for col in range(SIZE):
-            color = WHITE_COLOR if (row + col) % 2 == 0 else BLACK_COLOR
-            pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE + 100, SQUARE_SIZE, SQUARE_SIZE))
-            piece = main_board.board[col][row]
-            if piece != EMPTY:
-                screen.blit(piece_images[piece], (col * SQUARE_SIZE, row * SQUARE_SIZE + 100))
-    
-    # ハイライト表示
-    if selected_square and isinstance(selected_square, tuple) and len(selected_square) == 2:
-        col, row = selected_square
-        highlight = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE), pygame.SRCALPHA)
-        highlight.fill(HIGHLIGHT_COLOR)
-        screen.blit(highlight, (col * SQUARE_SIZE, row * SQUARE_SIZE + 100))
-    elif selected_square and isinstance(selected_square, tuple) and len(selected_square) == 6 and selected_square[2] == "drop_target":
-        col, row, _, _, _, _ = selected_square
-        highlight = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE), pygame.SRCALPHA)
-        highlight.fill(HIGHLIGHT_COLOR)
-        screen.blit(highlight, (col * SQUARE_SIZE, row * SQUARE_SIZE + 100))
-
-def draw_captured_pieces(main_board, selected_square=None):
-    white_captured = main_board.captured_pieces[WHITE]
-    black_captured = main_board.captured_pieces[BLACK]
-    
-    # 白の持ち駒（上部）
-    for i, piece in enumerate(white_captured):
-        abs_piece = abs(piece)
-        displayed_piece = WHITE * abs_piece if piece < 0 else BLACK * abs_piece
-        screen.blit(piece_images[displayed_piece], (i * SQUARE_SIZE, 10))
-    
-    # 黒の持ち駒（下部）
-    for i, piece in enumerate(black_captured):
-        abs_piece = abs(piece)
-        displayed_piece = BLACK * abs_piece if piece > 0 else WHITE * abs_piece
-        screen.blit(piece_images[displayed_piece], (i * SQUARE_SIZE, WINDOW_HEIGHT - SQUARE_SIZE - 10))
-    
-    # 選択中の持ち駒をハイライト
-    if selected_square and selected_square[0] == "captured":
-        player, idx = selected_square[1], selected_square[2]
-        highlight = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE), pygame.SRCALPHA)
-        highlight.fill(HIGHLIGHT_COLOR)
-        if player == WHITE:
-            screen.blit(highlight, (idx * SQUARE_SIZE, 10))
-        else:
-            screen.blit(highlight, (idx * SQUARE_SIZE, WINDOW_HEIGHT - SQUARE_SIZE - 10))
 
 def draw_gradient_background(surface, top_color, bottom_color):
     height = surface.get_height()
@@ -152,6 +107,138 @@ def draw_button(surface, text, font, x, y, width, height, color, hover_color, mo
     surface.blit(text_surface, text_rect)
     
     return button_rect
+
+# メニュー画面
+def main_menu():
+    clock = pygame.time.Clock()
+    button_width = 300
+    button_height = 50
+    button_spacing = 20
+    total_height = (button_height + button_spacing) * 4 - button_spacing
+    start_y = (WINDOW_HEIGHT - total_height) // 2
+    
+    while True:
+        draw_gradient_background(screen, GRADIENT_TOP, GRADIENT_BOTTOM)
+        
+        mouse_pos = pygame.mouse.get_pos()
+        
+        # ボタンの描画
+        online_button = draw_button(
+            screen,
+            "オンライン対戦",
+            button_font,
+            (WINDOW_WIDTH - button_width) // 2,
+            start_y,
+            button_width,
+            button_height,
+            BUTTON_COLOR,
+            BUTTON_HOVER_COLOR,
+            mouse_pos
+        )
+        bot_button = draw_button(
+            screen,
+            "ボット対戦",
+            button_font,
+            (WINDOW_WIDTH - button_width) // 2,
+            start_y + (button_height + button_spacing),
+            button_width,
+            button_height,
+            BUTTON_COLOR,
+            BUTTON_HOVER_COLOR,
+            mouse_pos
+        )
+        friend_button = draw_button(
+            screen,
+            "フレンド対戦",
+            button_font,
+            (WINDOW_WIDTH - button_width) // 2,
+            start_y + 2 * (button_height + button_spacing),
+            button_width,
+            button_height,
+            BUTTON_COLOR,
+            BUTTON_HOVER_COLOR,
+            mouse_pos
+        )
+        tournament_button = draw_button(
+            screen,
+            "大会",
+            button_font,
+            (WINDOW_WIDTH - button_width) // 2,
+            start_y + 3 * (button_height + button_spacing),
+            button_width,
+            button_height,
+            BUTTON_COLOR,
+            BUTTON_HOVER_COLOR,
+            mouse_pos
+        )
+        settings_button = draw_button(
+            screen,
+            "設定",
+            button_font,
+            WINDOW_WIDTH - 210,
+            WINDOW_HEIGHT - 90,
+            200,
+            50,
+            BUTTON_COLOR,
+            BUTTON_HOVER_COLOR,
+            mouse_pos
+        )
+        
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if bot_button.collidepoint(event.pos):
+                    botmode_gui()  # ボット対戦を開始
+                # 他のボタンは未実装（クリックしても何も起こらない）
+
+        clock.tick(60)
+
+def draw_board(main_board, selected_square=None):
+    for row in range(SIZE):
+        for col in range(SIZE):
+            color = WHITE_COLOR if (row + col) % 2 == 0 else BLACK_COLOR
+            pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE + 100, SQUARE_SIZE, SQUARE_SIZE))
+            piece = main_board.board[col][row]
+            if piece != EMPTY:
+                screen.blit(piece_images[piece], (col * SQUARE_SIZE, row * SQUARE_SIZE + 100))
+    
+    if selected_square and isinstance(selected_square, tuple) and len(selected_square) == 2:
+        col, row = selected_square
+        highlight = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE), pygame.SRCALPHA)
+        highlight.fill(HIGHLIGHT_COLOR)
+        screen.blit(highlight, (col * SQUARE_SIZE, row * SQUARE_SIZE + 100))
+    elif selected_square and isinstance(selected_square, tuple) and len(selected_square) == 6 and selected_square[2] == "drop_target":
+        col, row, _, _, _, _ = selected_square
+        highlight = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE), pygame.SRCALPHA)
+        highlight.fill(HIGHLIGHT_COLOR)
+        screen.blit(highlight, (col * SQUARE_SIZE, row * SQUARE_SIZE + 100))
+
+def draw_captured_pieces(main_board, selected_square=None):
+    white_captured = main_board.captured_pieces[WHITE]
+    black_captured = main_board.captured_pieces[BLACK]
+    
+    for i, piece in enumerate(white_captured):
+        abs_piece = abs(piece)
+        displayed_piece = WHITE * abs_piece if piece < 0 else BLACK * abs_piece
+        screen.blit(piece_images[displayed_piece], (i * SQUARE_SIZE, 10))
+    
+    for i, piece in enumerate(black_captured):
+        abs_piece = abs(piece)
+        displayed_piece = BLACK * abs_piece if piece > 0 else WHITE * abs_piece
+        screen.blit(piece_images[displayed_piece], (i * SQUARE_SIZE, WINDOW_HEIGHT - SQUARE_SIZE - 10))
+    
+    if selected_square and selected_square[0] == "captured":
+        player, idx = selected_square[1], selected_square[2]
+        highlight = pygame.Surface((SQUARE_SIZE, SQUARE_SIZE), pygame.SRCALPHA)
+        highlight.fill(HIGHLIGHT_COLOR)
+        if player == WHITE:
+            screen.blit(highlight, (idx * SQUARE_SIZE, 10))
+        else:
+            screen.blit(highlight, (idx * SQUARE_SIZE, WINDOW_HEIGHT - SQUARE_SIZE - 10))
 
 def get_promotion_choice(main_board, selected_square, clock):
     choices = ['Q', 'R', 'N', 'B']
@@ -330,7 +417,32 @@ def draw_game_over(main_board, clock, resign=False):
         
         clock.tick(60)
 
-def playmode_gui():
+# ボットの手をランダムに選択する関数
+def get_bot_move(main_board):
+    legal_moves = []
+    # ボード上の駒を移動する場合
+    for fr_col in range(SIZE):
+        for fr_row in range(SIZE):
+            piece = main_board.board[fr_col][fr_row]
+            if piece != EMPTY and fundam.PosNeg(piece) == main_board.player:
+                for to_col in range(SIZE):
+                    for to_row in range(SIZE):
+                        if main_board.can_move(fr_col, fr_row, to_col, to_row):
+                            legal_moves.append((fr_col, fr_row, to_col, to_row))
+    
+    # 持ち駒を配置する場合
+    captured = main_board.captured_pieces[main_board.player]
+    for idx, piece in enumerate(captured):
+        for col in range(SIZE):
+            for row in range(SIZE):
+                if main_board.can_drop(piece, col, row):
+                    legal_moves.append(("captured", idx, col, row))
+    
+    if legal_moves:
+        return random.choice(legal_moves)
+    return None
+
+def botmode_gui():
     main_board = board.Board()
     selected_square = None
     clock = pygame.time.Clock()
@@ -343,128 +455,145 @@ def playmode_gui():
     record.close()
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                col = x // SQUARE_SIZE
-                row = (y - 100) // SQUARE_SIZE
-                
-                # 持ち駒エリアのクリック
-                if y < 100:  # 上部（白の持ち駒エリア）
-                    piece_idx = x // SQUARE_SIZE
-                    if selected_square and (selected_square[0] == "captured" or selected_square[2] == "drop_target"):
-                        if piece_idx >= len(main_board.captured_pieces[WHITE]):
-                            logger.debug("Cancelled captured piece selection by clicking empty space (White)")
-                            selected_square = None
-                            continue
-                        elif piece_idx < len(main_board.captured_pieces[WHITE]) and main_board.player == WHITE:
+        # プレイヤーのターン（白）
+        if main_board.player == WHITE:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    col = x // SQUARE_SIZE
+                    row = (y - 100) // SQUARE_SIZE
+                    
+                    # 持ち駒エリアのクリック
+                    if y < 100:  # 白の持ち駒エリア
+                        piece_idx = x // SQUARE_SIZE
+                        if selected_square and (selected_square[0] == "captured" or selected_square[2] == "drop_target"):
+                            if piece_idx >= len(main_board.captured_pieces[WHITE]):
+                                logger.debug("Cancelled captured piece selection by clicking empty space (White)")
+                                selected_square = None
+                                continue
+                            elif piece_idx < len(main_board.captured_pieces[WHITE]) and main_board.player == WHITE:
+                                selected_square = ("captured", WHITE, piece_idx)
+                                logger.debug(f"Selected captured piece: White, index {piece_idx}")
+                                continue
+                        if piece_idx < len(main_board.captured_pieces[WHITE]) and main_board.player == WHITE:
                             selected_square = ("captured", WHITE, piece_idx)
                             logger.debug(f"Selected captured piece: White, index {piece_idx}")
                             continue
-                    if piece_idx < len(main_board.captured_pieces[WHITE]) and main_board.player == WHITE:
-                        selected_square = ("captured", WHITE, piece_idx)
-                        logger.debug(f"Selected captured piece: White, index {piece_idx}")
+                    elif y > BOARD_SIZE + 100:  # 黒の持ち駒エリア（プレイヤーは操作しない）
                         continue
-                elif y > BOARD_SIZE + 100:  # 下部（黒の持ち駒エリア）
-                    piece_idx = x // SQUARE_SIZE
-                    if selected_square and (selected_square[0] == "captured" or selected_square[2] == "drop_target"):
-                        if piece_idx >= len(main_board.captured_pieces[BLACK]):
-                            logger.debug("Cancelled captured piece selection by clicking empty space (Black)")
-                            selected_square = None
-                            continue
-                        elif piece_idx < len(main_board.captured_pieces[BLACK]) and main_board.player == BLACK:
-                            selected_square = ("captured", BLACK, piece_idx)
-                            logger.debug(f"Selected captured piece: Black, index {piece_idx}")
-                            continue
-                    if piece_idx < len(main_board.captured_pieces[BLACK]) and main_board.player == BLACK:
-                        selected_square = ("captured", BLACK, piece_idx)
-                        logger.debug(f"Selected captured piece: Black, index {piece_idx}")
-                        continue
-                
-                # ボード内のクリック
-                if 0 <= row < SIZE and 0 <= col < SIZE:
-                    if selected_square is None:
-                        if main_board.board[col][row] != EMPTY and fundam.PosNeg(main_board.board[col][row]) == main_board.player:
-                            selected_square = (col, row)
-                            logger.debug(f"Selected square: ({col}, {row})")
-                    else:
-                        if selected_square[0] == "captured":
-                            player, idx = selected_square[1], selected_square[2]
-                            piece = main_board.captured_pieces[player][idx]
-                            if selected_square[1] == main_board.player:
-                                selected_square = (col, row, "drop_target", player, idx, piece)
-                                logger.debug(f"Selected drop target: ({col}, {row})")
+                    
+                    # ボード内のクリック
+                    if 0 <= row < SIZE and 0 <= col < SIZE:
+                        if selected_square is None:
                             if main_board.board[col][row] != EMPTY and fundam.PosNeg(main_board.board[col][row]) == main_board.player:
                                 selected_square = (col, row)
-                                logger.debug(f"Cancelled captured piece selection and selected square: ({col}, {row})")
-                        elif len(selected_square) == 6 and selected_square[2] == "drop_target":
-                            target_col, target_row, _, player, idx, piece = selected_square
-                            if (col, row) == (target_col, target_row):
-                                logger.debug(f"Attempting drop: piece={piece} at ({col}, {row})")
-                                if main_board.drop_piece(piece, col, row):
-                                    logger.debug("Drop successful")
-                                    if move_sound:
-                                        move_sound.play()  # 持ち駒を置いたときにサウンド再生
-                                    selected_square = None
-                                    move_made = True
-                                else:
-                                    logger.debug("Drop failed")
-                                    selected_square = (target_col, target_row, "drop_target", player, idx, piece)
-                            else:
-                                selected_square = (col, row, "drop_target", player, idx, piece)
-                                logger.debug(f"Selected new drop target: ({col}, {row})")
-                            if main_board.board[col][row] != EMPTY and fundam.PosNeg(main_board.board[col][row]) == main_board.player:
-                                selected_square = (col, row)
-                                logger.debug(f"Cancelled drop target selection and selected square: ({col}, {row})")
+                                logger.debug(f"Selected square: ({col}, {row})")
                         else:
-                            fr_col, fr_row = selected_square
-                            logger.debug(f"Attempting move: from ({fr_col}, {fr_row}) to ({col}, {row})")
-                            piece = main_board.board[fr_col][fr_row]
-                            if abs(piece) == PAWN and (row == 0 or row == 7):
-                                promotion = get_promotion_choice(main_board, selected_square, clock)
-                                if main_board.move(fr_col, fr_row, col, row, {'Q': Q, 'R': R, 'N': N, 'B': B}[promotion]):
-                                    logger.debug(f"Move successful with promotion to {promotion}")
-                                    if move_sound:
-                                        move_sound.play()  # 駒を移動したときにサウンド再生
-                                    selected_square = None
-                                    move_made = True
+                            if selected_square[0] == "captured":
+                                player, idx = selected_square[1], selected_square[2]
+                                piece = main_board.captured_pieces[player][idx]
+                                if selected_square[1] == main_board.player:
+                                    selected_square = (col, row, "drop_target", player, idx, piece)
+                                    logger.debug(f"Selected drop target: ({col}, {row})")
+                                if main_board.board[col][row] != EMPTY and fundam.PosNeg(main_board.board[col][row]) == main_board.player:
+                                    selected_square = (col, row)
+                                    logger.debug(f"Cancelled captured piece selection and selected square: ({col}, {row})")
+                            elif len(selected_square) == 6 and selected_square[2] == "drop_target":
+                                target_col, target_row, _, player, idx, piece = selected_square
+                                if (col, row) == (target_col, target_row):
+                                    logger.debug(f"Attempting drop: piece={piece} at ({col}, {row})")
+                                    if main_board.drop_piece(piece, col, row):
+                                        logger.debug("Drop successful")
+                                        if move_sound:
+                                            move_sound.play()
+                                        selected_square = None
+                                        move_made = True
+                                    else:
+                                        logger.debug("Drop failed")
+                                        selected_square = (target_col, target_row, "drop_target", player, idx, piece)
                                 else:
-                                    logger.debug("Move failed")
-                                    selected_square = None
+                                    selected_square = (col, row, "drop_target", player, idx, piece)
+                                    logger.debug(f"Selected new drop target: ({col}, {row})")
+                                if main_board.board[col][row] != EMPTY and fundam.PosNeg(main_board.board[col][row]) == main_board.player:
+                                    selected_square = (col, row)
+                                    logger.debug(f"Cancelled drop target selection and selected square: ({col}, {row})")
                             else:
-                                if main_board.move(fr_col, fr_row, col, row):
-                                    logger.debug("Move successful")
-                                    if move_sound:
-                                        move_sound.play()  # 駒を移動したときにサウンド再生
-                                    selected_square = None
-                                    move_made = True
+                                fr_col, fr_row = selected_square
+                                logger.debug(f"Attempting move: from ({fr_col}, {fr_row}) to ({col}, {row})")
+                                piece = main_board.board[fr_col][fr_row]
+                                if abs(piece) == PAWN and (row == 0 or row == 7):
+                                    promotion = get_promotion_choice(main_board, selected_square, clock)
+                                    if main_board.move(fr_col, fr_row, col, row, {'Q': Q, 'R': R, 'N': N, 'B': B}[promotion]):
+                                        logger.debug(f"Move successful with promotion to {promotion}")
+                                        if move_sound:
+                                            move_sound.play()
+                                        selected_square = None
+                                        move_made = True
+                                    else:
+                                        logger.debug("Move failed")
+                                        selected_square = None
                                 else:
-                                    logger.debug("Move failed")
-                                    selected_square = None
+                                    if main_board.move(fr_col, fr_row, col, row):
+                                        logger.debug("Move successful")
+                                        if move_sound:
+                                            move_sound.play()
+                                        selected_square = None
+                                        move_made = True
+                                    else:
+                                        logger.debug("Move failed")
+                                        selected_square = None
+                    
+                    # 投了ボタンのクリック処理
+                    resign_button = pygame.Rect(WINDOW_WIDTH - 210, WINDOW_HEIGHT - 90, 200, 50)
+                    if resign_button.collidepoint(event.pos):
+                        logger.info(f"{main_board.player == WHITE and 'White' or 'Black'} initiated resign confirmation")
+                        if confirm_resign(main_board, clock):
+                            logger.info(f"{main_board.player == WHITE and 'White' or 'Black'} resigned!")
+                            main_board.s = "1-0" if main_board.player == BLACK else "0-1"
+                            main_board.record(MAINRECADDRESS)
+                            draw_game_over(main_board, clock, resign=True)
+                            return  # メニューに戻る
         
-                # 投了ボタンのクリック処理
-                resign_button = pygame.Rect(WINDOW_WIDTH - 210, WINDOW_HEIGHT - 90, 200, 50)
-                if resign_button.collidepoint(event.pos):
-                    logger.info(f"{main_board.player == WHITE and 'White' or 'Black'} initiated resign confirmation")
-                    if confirm_resign(main_board, clock):  # 確認ダイアログを表示
-                        logger.info(f"{main_board.player == WHITE and 'White' or 'Black'} resigned!")
-                        # 棋譜に記録（投了したプレイヤーの相手が勝利）
-                        main_board.s = "1-0" if main_board.player == BLACK else "0-1"
-                        main_board.record(MAINRECADDRESS)
-                        # ゲーム終了画面を表示
-                        draw_game_over(main_board, clock, resign=True)
-                        pygame.quit()
-                        sys.exit()
+        # ボットのターン（黒）
+        else:
+            bot_move = get_bot_move(main_board)
+            if bot_move:
+                if bot_move[0] == "captured":
+                    _, idx, col, row = bot_move
+                    piece = main_board.captured_pieces[main_board.player][idx]
+                    logger.debug(f"Bot attempts drop: piece={piece} at ({col}, {row})")
+                    if main_board.drop_piece(piece, col, row):
+                        logger.debug("Bot drop successful")
+                        if move_sound:
+                            move_sound.play()
+                        move_made = True
+                else:
+                    fr_col, fr_row, to_col, to_row = bot_move
+                    logger.debug(f"Bot attempts move: from ({fr_col}, {fr_row}) to ({to_col}, {to_row})")
+                    piece = main_board.board[fr_col][fr_row]
+                    if abs(piece) == PAWN and (to_row == 0 or to_row == 7):
+                        # ボットはランダムにプロモーションを選択
+                        promotion = random.choice(['Q', 'R', 'N', 'B'])
+                        if main_board.move(fr_col, fr_row, to_col, to_row, {'Q': Q, 'R': R, 'N': N, 'B': B}[promotion]):
+                            logger.debug(f"Bot move successful with promotion to {promotion}")
+                            if move_sound:
+                                move_sound.play()
+                            move_made = True
+                    else:
+                        if main_board.move(fr_col, fr_row, to_col, to_row):
+                            logger.debug("Bot move successful")
+                            if move_sound:
+                                move_sound.play()
+                            move_made = True
 
         if move_made:
             game_over = main_board.is_game_over()
             if game_over is not None:
                 draw_game_over(main_board, clock)
-                pygame.quit()
-                sys.exit()
+                return  # メニューに戻る
             move_made = False
 
         screen.fill((255, 255, 255))
@@ -474,7 +603,6 @@ def playmode_gui():
         turn_text = small_font.render(f"Turn: {'White' if main_board.player == WHITE else 'Black'}", True, (0, 0, 0))
         screen.blit(turn_text, (10, WINDOW_HEIGHT - 40))
         
-        # 投了ボタンの描画
         mouse_pos = pygame.mouse.get_pos()
         resign_button = draw_button(
             screen,
@@ -493,4 +621,4 @@ def playmode_gui():
         clock.tick(60)
 
 if __name__ == "__main__":
-    playmode_gui()
+    main_menu()  # メニュー画面から開始

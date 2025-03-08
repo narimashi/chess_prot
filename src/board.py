@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # board.py
 # programmed by Saito-Saito-Saito, modified by Grok 3 (xAI)
-# last updated: March 07, 2025
+# last updated: March 08, 2025
 
 import copy
 import re
@@ -64,6 +64,38 @@ class Board:
         print(f"\nWhite's captured pieces: {[IO.ToggleType(piece) for piece in self.captured_pieces[WHITE]]}")
         print(f"Black's captured pieces: {[IO.ToggleType(piece) for piece in self.captured_pieces[BLACK]]}")
         print('\n')
+
+    def can_move(self, frFILE, frRANK, toFILE, toRANK, promote=EMPTY, logger=None):
+        """移動が可能かどうかをシミュレーションで判定"""
+        logger = logger or self.logger
+        
+        # 現在の状態を保存
+        original_board = copy.deepcopy(self.board)
+        original_ep_target = copy.deepcopy(self.ep_target)
+        original_castl_k = copy.deepcopy(self.castl_k)
+        original_castl_q = copy.deepcopy(self.castl_q)
+        original_captured_pieces = copy.deepcopy(self.captured_pieces)
+        original_turn = self.turn
+        original_player = self.player
+
+        # motionjudge で移動の合法性をチェック
+        if not self.motionjudge(frFILE, frRANK, toFILE, toRANK, promote):
+            logger.debug(f"Move from ({frFILE}, {frRANK}) to ({toFILE}, {toRANK}) is invalid")
+            return False
+
+        # 実際の移動を試行（シミュレーション）
+        success = self.move(frFILE, frRANK, toFILE, toRANK, promote, simulation=True)
+
+        # 状態を元に戻す
+        self.board = original_board
+        self.ep_target = original_ep_target
+        self.castl_k = original_castl_k
+        self.castl_q = original_castl_q
+        self.captured_pieces = original_captured_pieces
+        self.turn = original_turn
+        self.player = original_player
+
+        return success
 
     def motionjudge(self, frFILE, frRANK, toFILE, toRANK, promote=EMPTY, logger=None):
         logger = logger or self.logger
